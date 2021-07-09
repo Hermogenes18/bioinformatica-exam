@@ -84,7 +84,7 @@ def funcion(A,B,d,s=df,missmatch = -2,match = 2,m_b = False):
   A = [i for i in A]
   B = "-"+B
   B = [i for i in B]
-  print(s.head())
+  #print(s.head())
   matrix = np.zeros((len(B),len(A)))
   
   matrix[0,:] = [d*i for i in range(len(A))]
@@ -98,10 +98,9 @@ def funcion(A,B,d,s=df,missmatch = -2,match = 2,m_b = False):
         matrix[j][i] = max(v1,v2,v3)
   matrix_values = full_order(A,B,matrix,s,d)
   Values_DF = pd.DataFrame(np.transpose(np.array(matrix_values)),index=["sequ1","sequ2","score"])
-
-  print(Values_DF)
-  print(Values_DF.T.drop_duplicates().T)
-  return matrix,A,B
+  Values_DF = Values_DF.T.drop_duplicates().T
+  values = [Values_DF[0]["sequ1"],Values_DF[0]["sequ2"],Values_DF[0]["score"]]
+  return values,A,B
 
 # values,A,B = funcion("AGC","AAG",d=-5,m_b=False)
 

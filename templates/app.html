@@ -27,7 +27,7 @@
 
     <!-- Form -->
     <div class="container">
-      <form action="/send" method="POST">
+      <form action="/send" method="POST" enctype=multipart/form-data>
         <label for="Number One">Ingrese la cadena</label>
         <input
           type="text"
@@ -35,7 +35,7 @@
           class="u-full-width"
           name="num1"
         />
-
+        <input type="file" name="file" accept=".fasta"/> 
         <label for="Number Two">Second Number</label>
         <input
           type="text"
@@ -43,6 +43,7 @@
           class="u-full-width"
           name="num2"
         />
+        <input type="file" name="file1" accept=".fasta"/> 
 
         <label for="Operation">Metodo</label>
         <select class="u-full-width" name="operation">
@@ -50,14 +51,18 @@
           <option value="subtract">Alineamiento Global</option>
           <option value="multiply">BLAST</option>
           <option value="divide">MUSCLE</option>
-          <option value="divide">Jukes-cantor model</option>
-          <option value="divide">Kimura model</option>
+          <option value="jukes">Jukes-cantor model</option>
+          <option value="kimura">Kimura model</option>
         </select>
 
         <input type="submit" value="Alinear" id="calc_btn" />
         <br />
         <div class="alert">
-          {{ sum }}
+          Sequencia 1: {{ sum }}
+          <br>
+          Sequencia 2: {{ seq }}
+          <br>
+          SCORE : {{ total }}
         </div>
       </form>
     </div>
