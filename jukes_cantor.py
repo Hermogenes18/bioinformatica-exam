@@ -49,30 +49,6 @@ class distance_matrix:
 
 #Read input file
 def read_file(file_name):
-<<<<<<< HEAD
-
-	list_labels = []
-	list_seq = []
-
-	try:
-		with open(file_name, 'r') as f:       
-
-			count = 0
-
-			for line in f:
-				if (count % 2 == 0):
-					list_labels.append(line)
-				else:
-					list_seq.append(line)
-				count+=1
-
-			f.close()
-		
-	except IOError: 
-		print ("Could not read file")
-
-	return list_labels, list_seq   
-=======
   list_labels = []
   list_seq = []
   try:
@@ -98,7 +74,6 @@ def read_file(file_name):
     list_labels[i] = list_l
     list_seq[i] = list_s
   return list_labels, list_seq  
->>>>>>> 93a485f5dfecc5fc56fab48c612185256574d276
 
 #Remove the characters ">" and "\n"
 def remove_inval_char(label_seq1,label_seq2):
