@@ -1,3 +1,5 @@
+# jukes_cantor
+
 import numpy as np
 import csv
 
@@ -10,44 +12,44 @@ import csv
    -save_to_csv: Saves the information stored in the object in a csv
 """
 class distance_matrix:
+  def __init__(self):
+    global dict1
+    dict1 = {}
+  def add(self,label_seq1,label_seq2,distance):
+    if (label_seq2 not in dict1) or (label_seq2 in dict1 and label_seq1 not in dict1[label_seq2]): #If dict1[label_seq2][label_seq1] existed, it would not be necessary to store the value again
+      if label_seq1 not in dict1:
+        dict2 = {}
+        dict1[label_seq1] = dict2
+      dict1[label_seq1][label_seq2] = distance
 
-	def __init__(self):
-		global dict1
-		dict1 = {}
 
-	def add(self,label_seq1,label_seq2,distance):
-
-		if (label_seq2 not in dict1) or (label_seq2 in dict1 and label_seq1 not in dict1[label_seq2]): #If dict1[label_seq2][label_seq1] existed, it would not be necessary to store the value again
-				if label_seq1 not in dict1:
-					dict2 = {}
-					dict1[label_seq1] = dict2
-				dict1[label_seq1][label_seq2] = distance
-
-	def getValue(self,label_seq1,label_seq2):
-		if label_seq1 in dict1:
-			if label_seq2 in dict1[label_seq1]:
-				return dict1[label_seq1][label_seq2]
-
-	def printMatrix(self):
-		for key1 in dict1:
-			for key2 in dict1[key1]:
-				print("Distance %s  &  %s: %.6f\n"%(key1,key2,dict1[key1][key2]))
-
-	def save_to_csv(self,output_file_name):
-		with open(output_file_name, 'w') as csvfile:
-			fieldnames = ['Sequence 1', 'Sequence 2', 'Distance']
-			writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-			writer.writeheader()
-			for key1 in dict1:
-				for key2 in dict1[key1]:
-					writer.writerow({'Sequence 1': key1, 'Sequence 2': key2,'Distance': dict1[key1][key2]})
-
-			csvfile.close()
+  def getValue(self,label_seq1,label_seq2):
+    if label_seq1 in dict1:
+      if label_seq2 in dict1[label_seq1]:
+        return dict1[label_seq1][label_seq2]
+  def printMatrix(self):
+    matrix = []
+    for key1 in dict1:
+      temp = []
+      for key2 in dict1[key1]:
+				#print("Distance %s  &  %s: %.6f\n"%(key1,key2,dict1[key1][key2])
+        temp.append([key1,key2,dict1[key1][key2]])
+      matrix.append(temp)
+    return np.array(matrix)
+  def save_to_csv(self,output_file_name):
+    with open(output_file_name, 'w') as csvfile:
+      fieldnames = ['Sequence 1', 'Sequence 2', 'Distance']
+      writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+      writer.writeheader()
+      for key1 in dict1:
+        for key2 in dict1[key1]:
+          writer.writerow({'Sequence 1': key1, 'Sequence 2': key2,'Distance': dict1[key1][key2]})
+      csvfile.close()
 
 
 #Read input file
 def read_file(file_name):
+<<<<<<< HEAD
 
 	list_labels = []
 	list_seq = []
@@ -70,16 +72,44 @@ def read_file(file_name):
 		print ("Could not read file")
 
 	return list_labels, list_seq   
+=======
+  list_labels = []
+  list_seq = []
+  try:
+    with open(file_name, 'r') as f:
+      count = 0
+      cadena =""
+      for line in f:
+        if (line[0] == ">"):
+          list_labels.append(line)
+          if (cadena != ""):
+            list_seq.append(cadena)
+            cadena = ""
+        else:
+          cadena += line
+					#list_seq.append(line)
+        count+=1
+      list_seq.append(cadena)
+    f.close()
+  except IOError: 
+    print("Could not read file")
+  for i in range(len(list_seq)):
+    list_l,list_s = remove_inval_char(list_labels[i],list_seq[i])
+    list_labels[i] = list_l
+    list_seq[i] = list_s
+  return list_labels, list_seq  
+>>>>>>> 93a485f5dfecc5fc56fab48c612185256574d276
 
 #Remove the characters ">" and "\n"
 def remove_inval_char(label_seq1,label_seq2):
-	label_seq1 = label_seq1.replace(">", "")
-	label_seq1 = label_seq1.replace("\n", "")
-
-	label_seq2 = label_seq2.replace(">", "")
-	label_seq2 = label_seq2.replace("\n", "")
-
-	return label_seq1, label_seq2
+  label_seq1 = label_seq1.replace(">", "")
+  label_seq1 = label_seq1.replace("\n", "")
+  label_seq1 = label_seq1.replace(" ", "")
+  
+  label_seq2 = label_seq2.replace(">", "")
+  label_seq2 = label_seq2.replace("\n", "")
+  label_seq2 = label_seq2.replace(" ", "")
+  return label_seq1, label_seq2
 
 
 #Calculate Jukes Cantor distance
@@ -126,17 +156,18 @@ def calculate_matrix(list_seq,list_labels):
 	return dist_matrix
 
 
-def main():
+def main(name_fasta):
 
 	#Read input file
-    list_labels, list_seq = read_file("Public_Eacles_Morpho_Aglia.fas")
+    list_labels, list_seq = read_file(name_fasta)
 
+    print(list_labels)
+    print(list_seq)
     #Calculate the distance between these sequences
     dist_matrix = calculate_matrix(list_seq,list_labels)
-
+    matrix = dist_matrix.printMatrix()
+    print(matrix)
+    return matrix
     #Save the output in a CSV file
-    dist_matrix.save_to_csv('output_matrix.csv')
+    #dist_matrix.save_to_csv('output_matrisxs.csv')
 
-
-if __name__ == "__main__":
-    main()
