@@ -67,7 +67,7 @@ def read_file(file_name):
 			f.close()
 		
 	except IOError: 
-		print "Could not read file"
+		print ("Could not read file")
 
 	return list_labels, list_seq   
 
