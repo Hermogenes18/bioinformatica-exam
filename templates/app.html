@@ -63,7 +63,19 @@
           Sequencia 2: {{ seq }}
           <br>
           SCORE : {{ total }}
+          <br>
+          <table>
+          {% for row in data %}
+              {{row[0]}}
+              <ul>
+                  {% for element in row[1:] %}
+                      <ul>{{element}}<ul>
+                  {% endfor %}
+              </ul>
+          {% endfor %}
+          </table>
         </div>
+
       </form>
     </div>
   </body>

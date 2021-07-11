@@ -3,7 +3,7 @@ import pandas as pd
 from ali_local import funcion
 import blast as blst
 import ali_global as ag
-
+import jukes_cantor as jukes
 
 from Bio.Align.Applications import MuscleCommandline
 from Bio import AlignIO
@@ -73,13 +73,21 @@ def send(sum=sum):
         elif operation == 'divide':
             #sum = float(num1) / float(num2)
             muscle_exe = r"G:/bioinformatica/SEGUNDOEXAM ESTESI/bioinformatica-exam/muscle3.8.31_i86win32.exe"
-            in_file = r"/home/hermogene/Documents/bioinformatica/opuntia.fasta"
-            out_file = r"/home/hermogene/Documents/bioinformatica/aligned.fasta"
+            #print(muscle_exe, type(muscle_exe))
+            in_file = destination
+            out_file = os.path.join(APP_ROOT, 'aligned.fasta')
             cline = MuscleCommandline(muscle_exe, input=in_file, out=out_file)
             stdout, stderr = cline(in_file)
             align = AlignIO.read(out_file, "fasta")
-            print(align)
-            return render_template('app.html', sum=sum)
+            for record in align:
+                data = [record.id,record.seq]
+            return render_template('app.html', sum=data[0],seq=data[1])
+        elif operation == 'jukes':
+            matrix = jukes.main(destination)
+            for i in matrix:
+                for j in i:
+                    print(j)
+            return render_template('app.html', sum=0, data=matrix)
         else:
             return render_template('app.html')
 

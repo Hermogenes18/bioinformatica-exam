@@ -30,12 +30,9 @@ class distance_matrix:
   def printMatrix(self):
     matrix = []
     for key1 in dict1:
-      temp = []
       for key2 in dict1[key1]:
-				#print("Distance %s  &  %s: %.6f\n"%(key1,key2,dict1[key1][key2])
-        temp.append([key1,key2,dict1[key1][key2]])
-      matrix.append(temp)
-    return np.array(matrix)
+        matrix.append([key1,key2,dict1[key1][key2]])
+    return matrix
   def save_to_csv(self,output_file_name):
     with open(output_file_name, 'w') as csvfile:
       fieldnames = ['Sequence 1', 'Sequence 2', 'Distance']
@@ -49,30 +46,6 @@ class distance_matrix:
 
 #Read input file
 def read_file(file_name):
-<<<<<<< HEAD
-
-	list_labels = []
-	list_seq = []
-
-	try:
-		with open(file_name, 'r') as f:       
-
-			count = 0
-
-			for line in f:
-				if (count % 2 == 0):
-					list_labels.append(line)
-				else:
-					list_seq.append(line)
-				count+=1
-
-			f.close()
-		
-	except IOError: 
-		print ("Could not read file")
-
-	return list_labels, list_seq   
-=======
   list_labels = []
   list_seq = []
   try:
@@ -87,7 +60,7 @@ def read_file(file_name):
             cadena = ""
         else:
           cadena += line
-					#list_seq.append(line)
+          #list_seq.append(line)
         count+=1
       list_seq.append(cadena)
     f.close()
@@ -98,7 +71,6 @@ def read_file(file_name):
     list_labels[i] = list_l
     list_seq[i] = list_s
   return list_labels, list_seq  
->>>>>>> 93a485f5dfecc5fc56fab48c612185256574d276
 
 #Remove the characters ">" and "\n"
 def remove_inval_char(label_seq1,label_seq2):
@@ -115,50 +87,50 @@ def remove_inval_char(label_seq1,label_seq2):
 #Calculate Jukes Cantor distance
 def calculate_jukes_cantor(seq1,seq2):
 
-	length = 0 #length counter
-	diff = 0	#difference counter
-	nucleotides = 'ACGT'
+  length = 0 #length counter
+  diff = 0  #difference counter
+  nucleotides = 'ACGT'
 
-	#find percentage of characters that are different between two sequences
-	for i in range(min(len(seq1), len(seq2))):
-		if (seq1[i] in nucleotides) and (seq2[i] in nucleotides):
-			length += 1
-			if seq1[i] != seq2[i]:
-				diff += 1
+  #find percentage of characters that are different between two sequences
+  for i in range(min(len(seq1), len(seq2))):
+    if (seq1[i] in nucleotides) and (seq2[i] in nucleotides):
+      length += 1
+      if seq1[i] != seq2[i]:
+        diff += 1
 
-	#The equation does not exist for values of p greater than 3/4, neither for values of length == 0
-	if(length != 0): 
-		p = float(diff)/length
-		if(p < 3.0/4):
-			d = -3.0/4*np.log(1 - 4.0/3*p)
-			if d == -0.0:
-				d = d*(-1)
-		else:
-			d = np.inf
-	else:
-		d = np.inf
+  #The equation does not exist for values of p greater than 3/4, neither for values of length == 0
+  if(length != 0): 
+    p = float(diff)/length
+    if(p < 3.0/4):
+      d = -3.0/4*np.log(1 - 4.0/3*p)
+      if d == -0.0:
+        d = d*(-1)
+    else:
+      d = np.inf
+  else:
+    d = np.inf
 
-	return d
+  return d
 
 
 # Calculate Jukes Cantor distance for each pair of sequences
 def calculate_matrix(list_seq,list_labels):
-	dist_matrix = distance_matrix()
+  dist_matrix = distance_matrix()
 
-	for i in range(len(list_seq)):
-		for j in range(len(list_seq)):
-			if i != j:
-				dist = calculate_jukes_cantor(list_seq[i],list_seq[j])
-				if dist < 0.04: #discard values greater than 4%
-					label1,label2 = remove_inval_char(list_labels[i],list_labels[j])
-					dist_matrix.add(label1,label2,dist)
+  for i in range(len(list_seq)):
+    for j in range(len(list_seq)):
+      if i != j:
+        dist = calculate_jukes_cantor(list_seq[i],list_seq[j])
+        if dist < 0.04: #discard values greater than 4%
+          label1,label2 = remove_inval_char(list_labels[i],list_labels[j])
+          dist_matrix.add(label1,label2,dist)
 
-	return dist_matrix
+  return dist_matrix
 
 
 def main(name_fasta):
 
-	#Read input file
+  #Read input file
     list_labels, list_seq = read_file(name_fasta)
 
     print(list_labels)
@@ -166,8 +138,7 @@ def main(name_fasta):
     #Calculate the distance between these sequences
     dist_matrix = calculate_matrix(list_seq,list_labels)
     matrix = dist_matrix.printMatrix()
-    print(matrix)
+    print("salida", matrix)
     return matrix
     #Save the output in a CSV file
     #dist_matrix.save_to_csv('output_matrisxs.csv')
-
