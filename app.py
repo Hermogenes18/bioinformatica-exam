@@ -4,7 +4,13 @@ from ali_local import funcion
 import blast as blst
 import ali_global as ag
 import jukes_cantor as jukes
+<<<<<<< HEAD
 from kimura import K2Pdistance
+=======
+import kimura as kim
+import Tamura as tam
+import Tajima as taj
+>>>>>>> 5b151472c64980f1854c7e54c64771070b0a57fc
 
 from Bio.Align.Applications import MuscleCommandline
 from Bio import AlignIO
@@ -31,7 +37,8 @@ def read_fasta(filename):
 @app.route('/send', methods=['POST'])
 def send(sum=sum):
     if request.method == 'POST':
-        if 'file' in request.files or 'file1' in request.files:
+        if ('file' in request.files == True ) or ('file1' in request.files == True):
+            print ("archivo")
             file = request.files['file']
             target = os.path.join(APP_ROOT, 'uploads/')
             filename = secure_filename(file.filename)
@@ -47,7 +54,7 @@ def send(sum=sum):
             else:
                 num2 = request.form['num2']
 
-        elif 'file' not in request.files and 'file1' not in request.files:
+        else:
             num1 = request.form['num1']
             num2 = request.form['num2']
             print("IF")
@@ -89,10 +96,28 @@ def send(sum=sum):
                 for j in i:
                     print(j)
             return render_template('app.html', sum=0, data=matrix)
+<<<<<<< HEAD
 
         elif operation == 'kimura':
             values = K2Pdistance(str(num1),str(num2))
             return render_template('app.html', sum=values)
+=======
+        elif operation == 'kimura':
+            print ("kimura")
+            respuesta = kim.K2Pdistance(str(num1),str(num2))
+            return render_template('app.html',total=respuesta)
+        elif operation == 'tamura':
+            print ("tamura")
+            respuesta = tam.Tamuradistance(str(num1),str(num2))
+            return render_template('app.html',total=respuesta)
+        elif operation == 'tajima':
+            print ("tajima")
+            respuesta = taj.TNdistance(str(num1),str(num2))
+            return render_template('app.html',total=respuesta)
+
+
+
+>>>>>>> 5b151472c64980f1854c7e54c64771070b0a57fc
         else:
             return render_template('app.html')
 
