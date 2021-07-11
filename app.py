@@ -4,6 +4,9 @@ from ali_local import funcion
 import blast as blst
 import ali_global as ag
 import jukes_cantor as jukes
+import kimura as kim
+import Tamura as tam
+import Tajima as taj
 
 from Bio.Align.Applications import MuscleCommandline
 from Bio import AlignIO
@@ -88,6 +91,21 @@ def send(sum=sum):
                 for j in i:
                     print(j)
             return render_template('app.html', sum=0, data=matrix)
+        elif operation == 'kimura':
+            print ("kimura")
+            respuesta = kim.K2Pdistance(str(num1),str(num2))
+            return render_template('app.html',total=respuesta)
+        elif operation == 'tamura':
+            print ("tamura")
+            respuesta = tam.Tamuradistance(str(num1),str(num2))
+            return render_template('app.html',total=respuesta)
+        elif operation == 'tajima':
+            print ("tajima")
+            respuesta = taj.TNdistance(str(num1),str(num2))
+            return render_template('app.html',total=respuesta)
+
+
+
         else:
             return render_template('app.html')
 
