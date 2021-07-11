@@ -4,6 +4,7 @@ from ali_local import funcion
 import blast as blst
 import ali_global as ag
 import jukes_cantor as jukes
+from kimura import K2Pdistance
 
 from Bio.Align.Applications import MuscleCommandline
 from Bio import AlignIO
@@ -88,6 +89,10 @@ def send(sum=sum):
                 for j in i:
                     print(j)
             return render_template('app.html', sum=0, data=matrix)
+
+        elif operation == 'kimura':
+            values = K2Pdistance(str(num1),str(num2))
+            return render_template('app.html', sum=values)
         else:
             return render_template('app.html')
 
