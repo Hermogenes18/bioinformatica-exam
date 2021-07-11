@@ -33,7 +33,8 @@ def read_fasta(filename):
 @app.route('/send', methods=['POST'])
 def send(sum=sum):
     if request.method == 'POST':
-        if 'file' in request.files or 'file1' in request.files:
+        if ('file' in request.files == True ) or ('file1' in request.files == True):
+            print ("archivo")
             file = request.files['file']
             target = os.path.join(APP_ROOT, 'uploads/')
             filename = secure_filename(file.filename)
@@ -49,7 +50,7 @@ def send(sum=sum):
             else:
                 num2 = request.form['num2']
 
-        elif 'file' not in request.files and 'file1' not in request.files:
+        else:
             num1 = request.form['num1']
             num2 = request.form['num2']
             print("IF")
